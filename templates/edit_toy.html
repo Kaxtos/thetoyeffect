@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Toy</title>
+    <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    >
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Edit Toy</h1>
+        <form method="POST" enctype="multipart/form-data" action="/edit-toy/{{ toy[0] }}">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ toy[2] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="year">Year</label>
+                <input type="number" class="form-control" id="year" name="year" value="{{ toy[3] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="character">Character</label>
+                <input type="text" class="form-control" id="character" name="character" value="{{ toy[4] }}">
+            </div>
+            <div class="form-group">
+                <label for="category">Category</label>
+                <input type="text" class="form-control" id="category" name="category" value="{{ toy[5] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="subcategory">Subcategory</label>
+                <input type="text" class="form-control" id="subcategory" name="subcategory" value="{{ toy[6] }}">
+            </div>
+            <div class="form-group">
+                <label for="type">Type</label>
+                <input type="text" class="form-control" id="type" name="type" value="{{ toy[7] }}">
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="number" class="form-control" id="quantity" name="quantity" value="{{ toy[8] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" class="form-control" id="price" name="price" value="{{ toy[9] }}" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="photo">Update Photo (optional)</label>
+                <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+            <a href="/toys" class="btn btn-secondary btn-block">Cancel</a>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

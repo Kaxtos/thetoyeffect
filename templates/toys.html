@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toy Inventory</title>
+    <!-- Include Bootstrap CSS -->
+    <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    >
+    <!-- Include Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    >
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .logo {
+            width: 50px; /* Smaller size */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+        .table th {
+            background-color: #007bff;
+            color: white;
+        }
+        .img-thumbnail {
+            max-width: 100px;
+            max-height: 100px;
+            border: 1px solid #ddd;
+        }
+        .filter-header {
+            margin-bottom: 20px;
+        }
+        .filter-header h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .form-row .form-control {
+            border-radius: 8px;
+        }
+        .btn-block {
+            border-radius: 8px;
+        }
+        .no-results {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #6c757d;
+        }
+        .pagination {
+            justify-content: center;
+        }
+        .action-icons a {
+            text-decoration: none;
+            margin: 0 5px;
+            color: inherit;
+        }
+        .action-icons a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar with Logo -->
+    <!-- Navbar with Clickable Logo -->
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="/">
+            <img src="/static/images/logo.jpg" alt="Logo" class="logo">
+            The Toy Effect
+        </a>
+    </nav>
+
+    <div class="container">
+        <h1 class="text-center mb-4">Toy Inventory</h1>
+
+        <!-- Filter Section -->
+        <div class="filter-header">
+            <h2>Filter Toys</h2>
+        </div>
+        <!-- Filters -->
+        <form method="GET" action="/toys" class="mb-4">
+            <div class="form-row">
+                <!-- Name Filter -->
+                <div class="col-md-3 mb-2">
+                    <input type="text" class="form-control" name="name" placeholder="Search by Name" value="{{ request.args.get('name', '') }}">
+                </div>
+                <!-- Year Filter -->
+                <div class="col-md-2 mb-2">
+                    <input type="number" class="form-control" name="year" placeholder="Search by Year" value="{{ request.args.get('year', '') }}">
+                </div>
+                <!-- Category Filter -->
+                <div class="col-md-2 mb-2">
+                    <select class="form-control" name="category">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                            <option value="{{ category }}" {% if request.args.get('category') == category %}selected{% endif %}>{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- Subcategory Filter -->
+                <div class="col-md-2 mb-2">
+                    <select class="form-control" name="subcategory">
+                        <option value="">All Subcategories</option>
+                        {% for subcategory in subcategories %}
+                            <option value="{{ subcategory }}" {% if request.args.get('subcategory') == subcategory %}selected{% endif %}>{{ subcategory }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- Type Filter -->
+                <div class="col-md-2 mb-2">
+                    <select class="form-control" name="type">
+                        <option value="">All Types</option>
+                        {% for type in types %}
+                            <option value="{{ type }}" {% if request.args.get('type') == type %}selected{% endif %}>{{ type }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- Submit Button -->
+                <div class="col-md-1 mb-2">
+                    <button type="submit" class="btn btn-primary btn-block">Search</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Table displaying filtered toys -->
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Photo</th>
+                    <th>Name</th>
+                    <th>Year</th>
+                    <th>Character</th>
+                    <th>Category</th>
+                    <th>Subcategory</th>
+                    <th>Type</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if toys %}
+                    {% for toy in toys %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>
+                                {% if toy[1] %}
+                                    <img src="{{ url_for('static', filename=toy[1].lstrip('static/')) }}" alt="Toy Photo" class="img-thumbnail" loading="lazy">
+                                {% else %}
+                                    <span class="text-muted">No Image</span>
+                                {% endif %}
+                            </td>
+                            
+                            <td>{{ toy[2] }}</td> <!-- Name -->
+                            <td>{{ toy[3] }}</td> <!-- Year -->
+                            <td>{{ toy[4] }}</td> <!-- Character -->
+                            <td>{{ toy[5] }}</td> <!-- Category -->
+                            <td>{{ toy[6] }}</td> <!-- Subcategory -->
+                            <td>{{ toy[7] }}</td> <!-- Type -->
+                            <td>{{ toy[8] }}</td> <!-- Quantity -->
+                            <td>${{ "%.2f"|format(toy[9]) }}</td> <!-- Price -->
+                            <td class="action-icons">
+                                <a href="/edit-toy/{{ toy[0] }}" title="Edit">
+                                    <i class="fas fa-edit text-warning"></i>
+                                </a>
+                                <form action="/delete-toy/{{ toy[0] }}" method="POST" style="display:inline;" title="Delete">
+                                    <button type="submit" class="btn btn-link p-0" onclick="return confirm('Are you sure you want to delete this toy?');">
+                                        <i class="fas fa-trash text-danger"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="11" class="text-center no-results">No toys match your search criteria.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item {% if current_page == 1 %}disabled{% endif %}">
+                    <a class="page-link" href="?page={{ current_page - 1 }}">Previous</a>
+                </li>
+                {% for page in range(1, total_pages + 1) %}
+                    <li class="page-item {% if page == current_page %}active{% endif %}">
+                        <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                    </li>
+                {% endfor %}
+                <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
+                    <a class="page-link" href="?page={{ current_page + 1 }}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+     <!-- Back and Home Buttons -->
+     <div class="container text-center mt-4">
+        <a href="javascript:history.back()" class="btn btn-secondary">Back</a>
+        <a href="/" class="btn btn-primary">Home</a>
+    </div>
+
+    <!-- Include Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

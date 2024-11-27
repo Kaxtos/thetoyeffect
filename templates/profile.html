@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile</title>
+    <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    >
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Welcome, {{ user[1] }}</h2>
+        <div class="text-center">
+            {% if user[4] %}
+                <img src="/{{ user[4] }}" alt="Profile Picture" class="rounded-circle" width="150">
+            {% else %}
+                <img src="/static/images/default-profile.png" alt="Profile Picture" class="rounded-circle" width="150">
+            {% endif %}
+        </div>
+        <div class="mt-4">
+            <h4>Username: {{ user[1] }}</h4>
+            <h4>Email: {{ user[2] }}</h4>
+        </div>
+        <a href="/logout" class="btn btn-danger mt-4">Log Out</a>
+    </div>
+</body>
+</html>

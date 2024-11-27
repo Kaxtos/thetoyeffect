@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - The Toy Effect</title>
+    <!-- Include Bootstrap CSS -->
+    <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    >
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .hero-section {
+            background: white;
+            color: #ff5733;
+            text-align: center;
+            padding: 50px 20px;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .hero-section img {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 80px;
+            height: auto;
+        }
+        .hero-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .hero-section p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        .welcome-message {
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+        .stats-card {
+            border: none;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .stats-card h2 {
+            font-size: 2.5rem;
+            color: #ff5733;
+        }
+        .stats-card p {
+            font-size: 1rem;
+            color: #6c757d;
+        }
+        .action-buttons {
+            margin-top: 20px;
+        }
+        .search-bar {
+            margin-top: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .search-bar input {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        .search-bar button {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <img src="/static/images/logo.jpg" alt="The Toy Effect Logo">
+        <h1>The Toy Effect</h1>
+        <p>Re-collection Inspires Innovation</p>
+        <p class="welcome-message">Logged in as: <strong>{{ username }}</strong></p>
+        <div class="action-buttons">
+            <a href="/toys" class="btn btn-outline-danger btn-lg">View Toys</a>
+            <a href="/add-toy" class="btn btn-danger btn-lg">Add New Toy</a>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h2>{{ total_toys }}</h2>
+                    <p>Total Toys</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h2>{{ total_categories }}</h2>
+                    <p>Total Categories</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h2>{{ total_subcategories }}</h2>
+                    <p>Total Subcategories</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h2>${{ "%.2f"|format(total_value) }}</h2>
+                    <p>Total Value</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar text-center mt-4">
+        <form action="/toys" method="GET">
+            <div class="input-group">
+                <input type="text" class="form-control" name="name" placeholder="Search for a toy...">
+                <button type="submit" class="btn btn-danger">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="container mt-5 text-center">
+        <p>
+            <a href="/categories" class="btn btn-outline-danger">View Categories</a>
+            <a href="/toys" class="btn btn-outline-danger">View All Toys</a>
+            <a href="/add-toy" class="btn btn-outline-success">Add New Toy</a>
+        </p>
+    </div>
+
+    <!-- Include Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

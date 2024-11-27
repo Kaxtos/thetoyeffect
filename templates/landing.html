@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Toy Effect</title>
+    <!-- Include Bootstrap CSS -->
+    <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    >
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.9)), url('/static/images/hero-bg.jpg') no-repeat center center/cover;
+            color: #333;
+            padding: 100px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-logo img {
+            max-width: 150px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ff4c4c;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .action-buttons a {
+            font-size: 1.2rem;
+            padding: 12px 30px;
+            border-radius: 25px;
+        }
+
+        .btn-primary {
+            background: #ff4c4c;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #e43c3c;
+        }
+
+        .btn-outline-light {
+            color: #ff4c4c;
+            border-color: #ff4c4c;
+        }
+
+        .btn-outline-light:hover {
+            background: #ff4c4c;
+            color: white;
+        }
+
+        /* Features Section */
+        .features {
+            background: #f8f9fa;
+            padding: 60px 20px;
+        }
+
+        .features h2 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .feature-card {
+            text-align: center;
+            border: none;
+            padding: 20px;
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card img {
+            max-width: 100px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h5 {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .feature-card p {
+            color: #666;
+        }
+
+        /* Call-to-Action Section */
+        .cta {
+            background: #ff4c4c;
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .cta a {
+            font-size: 1.2rem;
+            padding: 12px 30px;
+            border-radius: 25px;
+        }
+
+        /* Footer Section */
+        .footer {
+            background: #343a40;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer a {
+            color: #ff4c4c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container text-center">
+            <div class="hero-logo">
+                <img src="/static/images/logo.jpg" alt="The Toy Effect Logo">
+            </div>
+            <h1>The Toy Effect</h1>
+            <p>Re-collection Inspires Innovation</p>
+            <div class="action-buttons">
+                <a href="/toys" class="btn btn-primary btn-lg mx-2">Explore Toys</a>
+                <a href="/add-toy" class="btn btn-outline-light btn-lg mx-2">Add New Toy</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container text-center">
+            <h2 class="mb-5">Why Choose The Toy Effect?</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-card bg-white shadow-sm">
+                        <img src="/static/images/manage.svg" alt="Manage Toys">
+                        <h5>Effortless Management</h5>
+                        <p>Organize your toys by categories, subcategories, and types with ease.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card bg-white shadow-sm">
+                        <img src="/static/images/explore.svg" alt="Explore Toys">
+                        <h5>Discover & Explore</h5>
+                        <p>Search and filter through thousands of toys in your collection.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card bg-white shadow-sm">
+                        <img src="/static/images/insights.svg" alt="Insights">
+                        <h5>Insights at a Glance</h5>
+                        <p>Gain valuable insights into your collection with quick stats and analytics.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call-to-Action Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Get Started?</h2>
+            <p>Take control of your toy collection today!</p>
+            <a href="/toys" class="btn btn-light btn-lg mx-2">Explore Now</a>
+            <a href="/add-toy" class="btn btn-outline-light btn-lg mx-2">Add Your First Toy</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 The Toy Effect. All rights reserved.</p>
+        <p>
+            <a href="https://www.facebook.com">Facebook</a> |
+            <a href="https://www.twitter.com">Twitter</a> |
+            <a href="https://www.instagram.com">Instagram</a>
+        </p>
+    </footer>
+
+    <!-- Include Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

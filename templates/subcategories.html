@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Subcategories</title>
+</head>
+<body>
+    <h1>Subcategories</h1>
+    <ul>
+        {% for subcategory in subcategories %}
+            <li><a href="/types/{{ subcategory[0] }}">{{ subcategory[1] }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

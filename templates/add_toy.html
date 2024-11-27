@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Add New Toy</title>
+    <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    >
+    <style>
+        body {
+            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+            font-family: 'Arial', sans-serif;
+        }
+        .logo {
+            width: 50px; /* Adjust the size of the logo */
+            height: auto;
+        }
+
+        .form-container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-container h2 {
+            font-weight: bold;
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #343a40;
+        }
+
+        .form-check-label {
+            font-weight: normal;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        input[type="file"] {
+            padding: 3px;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .form-check-input:checked {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .preview-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .preview-container img {
+            max-width: 300px;
+            max-height: 300px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+    </style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const categorizationData = {{ categorization_data | tojson }};
+
+        const categorySelect = document.getElementById("category");
+        const subCategorySelect = document.getElementById("sub_category");
+        const typeSelect = document.getElementById("type");
+
+        // Populate subcategories based on selected category
+        categorySelect.addEventListener("change", function () {
+            const categoryId = categorySelect.value;
+            subCategorySelect.innerHTML = '<option value="" disabled selected>Select a subcategory</option>';
+            typeSelect.innerHTML = '<option value="" disabled selected>Select a type</option>';
+
+            if (categoryId && categorizationData[categoryId]) {
+                const subcategories = categorizationData[categoryId].subcategories;
+
+                // Use a Set to filter unique subcategories
+                const uniqueSubCategories = new Set();
+                for (const subCategoryId in subcategories) {
+                    const subCategoryName = subcategories[subCategoryId].name;
+                    if (!uniqueSubCategories.has(subCategoryName)) {
+                        uniqueSubCategories.add(subCategoryName);
+                        const option = document.createElement("option");
+                        option.value = subCategoryId;
+                        option.textContent = subCategoryName;
+                        subCategorySelect.appendChild(option);
+                    }
+                }
+            }
+        });
+
+        // Populate types based on selected subcategory
+        subCategorySelect.addEventListener("change", function () {
+            const categoryId = categorySelect.value;
+            const subCategoryId = subCategorySelect.value;
+            typeSelect.innerHTML = '<option value="" disabled selected>Select a type</option>';
+
+            if (
+                categoryId &&
+                subCategoryId &&
+                categorizationData[categoryId] &&
+                categorizationData[categoryId].subcategories[subCategoryId]
+            ) {
+                const types = categorizationData[categoryId].subcategories[subCategoryId].types;
+
+                // Use a Set to filter unique types
+                const uniqueTypes = new Set();
+                types.forEach((type) => {
+                    if (!uniqueTypes.has(type.name)) {
+                        uniqueTypes.add(type.name);
+                        const option = document.createElement("option");
+                        option.value = type.id;
+                        option.textContent = type.name;
+                        typeSelect.appendChild(option);
+                    }
+                });
+            }
+        });
+
+        // Image preview functionality
+        document.getElementById('photo').addEventListener('change', function (event) {
+            const preview = document.getElementById('imagePreview');
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = '#';
+                preview.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+
+
+
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="/">
+            <img src="/static/images/logo.jpg" alt="Logo" class="logo">
+            The Toy Effect
+        </a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <div class="form-container">
+            <h2 class="text-center">Add New Toy</h2>
+
+            <form method="POST" enctype="multipart/form-data" id="addToyForm">
+                <!-- CSRF Token -->
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <!-- Photo Upload -->
+                <div class="form-group">
+                    <label for="photo">Upload Photo</label>
+                    <input type="file" class="form-control" id="photo" name="photo" accept="image/*" required>
+                </div>
+                <div class="preview-container mb-3">
+                    <p>Image Preview:</p>
+                    <img id="imagePreview" alt="Preview will appear here">
+                </div>
+
+                <!-- Year -->
+                <div class="form-group">
+                    <label for="year">Year</label>
+                    <input type="number" class="form-control" id="year" name="year" placeholder="Enter the year" required>
+                </div>
+
+                <!-- Category -->
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select class="form-control" id="category" name="category" required>
+                        <option value="" disabled selected>Select a category</option>
+                        {% for category_id, category_name in categories %}
+                            <option value="{{ category_id }}">{{ category_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Subcategory -->
+                <div class="form-group">
+                    <label for="sub_category">Subcategory</label>
+                    <select class="form-control" id="sub_category" name="subcategory" required>
+                        <option value="" disabled selected>Select a subcategory</option>
+                    </select>
+                </div>
+
+                <!-- Type -->
+                <div class="form-group">
+                    <label for="type">Type</label>
+                    <select class="form-control" id="type" name="type" required>
+                        <option value="" disabled selected>Select a type</option>
+                    </select>
+                </div>
+
+                <!-- Additional Details -->
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter the toy's name">
+                </div>
+                <div class="form-group">
+                    <label for="manufacturers">Manufacturer</label>
+                    <input type="text" class="form-control" id="manufacturers" name="manufacturers" placeholder="Enter the manufacturer">
+                </div>
+                <div class="form-group">
+                    <label for="universe">Universe</label>
+                    <input type="text" class="form-control" id="universe" name="universe" placeholder="Enter the universe">
+                </div>
+                <div class="form-group">
+                    <label for="character">Character</label>
+                    <input type="text" class="form-control" id="character" name="character" placeholder="Enter character">
+                </div>
+                <div class="form-group">
+                    <label for="material">Material</label>
+                    <input type="text" class="form-control" id="material" name="material" placeholder="Enter the material">
+                </div>
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <input type="text" class="form-control" id="country" name="country" placeholder="Enter the country of origin">
+                </div>
+                <div class="form-group">
+                    <label for="item_condition">Condition</label>
+                    <input type="text" class="form-control" id="item_condition" name="item_condition" placeholder="Enter the condition">
+                </div>
+                <div class="form-check mb-3">
+                    <input type="checkbox" class="form-check-input" id="is_complete" name="is_complete">
+                    <label class="form-check-label" for="is_complete">Is Complete</label>
+                </div>
+                <div class="form-check mb-3">
+                    <input type="checkbox" class="form-check-input" id="box" name="box">
+                    <label class="form-check-label" for="box">Box Included</label>
+                </div>
+                <div class="form-group">
+                    <label for="box_condition">Box Condition</label>
+                    <input type="text" class="form-control" id="box_condition" name="box_condition" placeholder="Enter the box condition">
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Enter the quantity" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="number" class="form-control" id="price" name="price" placeholder="Enter the price" step="0.01" required>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary btn-block">Add Toy</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Toy Added Successfully</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Do you want to add more toys or view your collection?
+                </div>
+                <div class="modal-footer">
+                    <a href="/add-toy" class="btn btn-primary">Add More Toys</a>
+                    <a href="/toys" class="btn btn-secondary">View Collection</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back and Home Buttons -->
+    <div class="container text-center mt-4">
+        <a href="javascript:history.back()" class="btn btn-secondary">Back</a>
+        <a href="/" class="btn btn-primary">Home</a>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const preview = document.getElementById("imagePreview");
+            const photoInput = document.getElementById("photo");
+
+            photoInput.addEventListener("change", function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        preview.src = e.target.result;
+                        preview.style.display = "block";
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.src = "#";
+                    preview.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
