@@ -577,4 +577,4 @@ def page_not_found(e):
     return f"URL not found: {request.path}", 404
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=8000)
