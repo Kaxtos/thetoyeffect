@@ -210,3 +210,4 @@ wrapt==1.16.0
 wsproto==1.2.0
 xxhash==3.5.0
 yarl==1.17.1
+waitress
